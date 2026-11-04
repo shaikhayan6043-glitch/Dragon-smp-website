@@ -1,0 +1,342 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090711">
+<title>Dragon SMP | Minecraft Server</title>
+<style>
+:root{--bg:#090711;--panel:#12101d;--panel2:#191427;--purple:#9b5cff;--pink:#d46bff;--text:#f5f1ff;--muted:#aaa2bd;--line:#302344;--green:#53e0a0}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(ellipse at 50% -20%,#38205b 0,transparent 45%),var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer}
+.wrap{width:min(1120px,92%);margin:auto}
+header{position:sticky;top:0;z-index:10;background:#090711df;backdrop-filter:blur(14px);border-bottom:1px solid #ffffff12}
+.nav{height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:.5px}
+.dragon{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#b66bff,#5924a8);display:grid;place-items:center;box-shadow:0 0 24px #9b5cff55;font-size:21px}
+nav{display:flex;gap:25px;color:var(--muted);font-size:14px}
+nav a:hover{color:white}
+.navright{display:flex;align-items:center;gap:10px}
+.btn{border:0;border-radius:12px;padding:12px 18px;font-weight:800;color:white;background:linear-gradient(100deg,#7137c9,#aa58f5);box-shadow:0 8px 25px #8b45df35}
+.btn:hover{filter:brightness(1.12);transform:translateY(-1px)}
+.btn.secondary{background:#211832;border:1px solid #563879;box-shadow:none}
+.hero{padding:88px 0 65px;text-align:center;position:relative;overflow:hidden}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid #6e42a1;border-radius:30px;color:#d7baff;background:#28163d88;font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase}
+.dot{width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 10px var(--green)}
+h1{font-size:clamp(42px,8vw,82px);line-height:.98;letter-spacing:-3px;margin:24px 0 18px;font-weight:950}
+.grad{background:linear-gradient(90deg,#fff,#c99bff 50%,#8c48e8);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{max-width:610px;margin:0 auto;color:var(--muted);font-size:17px;line-height:1.7}
+.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:30px 0}
+.ipbox{display:inline-flex;align-items:center;gap:12px;padding:11px 14px;border:1px solid var(--line);border-radius:13px;background:#110d1b;color:#e8dcff;font-family:ui-monospace,monospace}
+.copy{border:0;background:#33204d;color:#e9d8ff;border-radius:8px;padding:7px 10px;font-size:12px;font-weight:800}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:42px}
+.stat{background:#120e1dba;border:1px solid var(--line);border-radius:16px;padding:19px}
+.stat strong{display:block;font-size:23px}
+.stat span{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:1px}
+section{padding:64px 0}
+.sectionhead{text-align:center;margin-bottom:30px}
+.kicker{color:#bb8cff;text-transform:uppercase;font-size:12px;letter-spacing:2px;font-weight:900}
+.sectionhead h2{font-size:clamp(28px,4vw,42px);margin:9px 0}
+.sectionhead p{color:var(--muted);margin:0}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{background:linear-gradient(160deg,#191329,#100d18);border:1px solid var(--line);border-radius:19px;padding:23px;position:relative;overflow:hidden}
+.card.featured{border-color:#a35af1;box-shadow:0 0 35px #8d48d922}
+.tag{display:inline-block;background:#372052;color:#d9baff;padding:6px 10px;border-radius:30px;font-size:11px;font-weight:900;letter-spacing:1px}
+.rankicon{font-size:32px;margin:14px 0 7px}
+.card h3{font-size:22px;margin:5px 0}
+.muted{color:var(--muted);font-size:14px;line-height:1.6}
+.price{font-size:30px;font-weight:950;margin:17px 0}
+.price small{font-size:12px;color:var(--muted);font-weight:500}
+.features{padding:0;list-style:none;color:#d6cde5;font-size:14px;line-height:2.1;margin:16px 0 20px}
+.features li:before{content:"✓";color:var(--green);font-weight:900;margin-right:9px}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:16px;background:#120e1d}
+.leader{width:100%;border-collapse:collapse;min-width:520px}
+.leader th,.leader td{text-align:left;padding:16px 20px;border-bottom:1px solid #2a2039}
+.leader th{font-size:11px;color:#bda9d8;letter-spacing:1px;text-transform:uppercase}
+.leader tr:last-child td{border:0}
+.ranknum{color:#c49aff;font-weight:900}
+.player{font-weight:800}
+.value{font-family:ui-monospace,monospace;color:#d6baff}
+.join{background:linear-gradient(120deg,#281443,#171025);border:1px solid #593b7b;border-radius:22px;padding:36px;text-align:center}
+.join h2{font-size:32px;margin:0 0 10px}
+.join p{color:var(--muted)}
+footer{border-top:1px solid #ffffff12;padding:26px 0;color:var(--muted);font-size:13px}
+.foot{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}
+.modal{display:none;position:fixed;inset:0;background:#05030bd9;z-index:30;place-items:center;padding:18px}
+.modal.show{display:grid}
+.modalbox{width:min(440px,100%);max-height:92vh;overflow-y:auto;background:#171124;border:1px solid #70449a;border-radius:20px;padding:25px;box-shadow:0 20px 80px #000}
+.modalbox h3{margin-top:0}
+.modalbox label{display:block;color:var(--muted);font-size:13px;margin:14px 0 6px}
+.modalbox input{width:100%;padding:12px;border:1px solid #49335e;background:#0e0b16;color:white;border-radius:10px}
+.notice{font-size:12px;color:#d2c4e4;line-height:1.6;background:#251936;padding:12px;border-radius:10px;margin:14px 0}
+.close{float:right;background:transparent;color:white;border:0;font-size:22px}
+.pay-price{font-size:27px;font-weight:900;text-align:center;color:#d6baff;background:#251936;border:1px solid #563879;padding:12px;border-radius:12px;margin:14px 0}
+@media(max-width:760px){
+ nav{display:none}
+ .nav{height:64px}
+ .grid{grid-template-columns:1fr}
+ .stats{gap:8px}
+ .stat{padding:14px}
+ .stat strong{font-size:18px}
+ .hero{padding:65px 0 45px}
+ h1{letter-spacing:-2px}
+ .join{padding:27px 18px}
+}
+</style>
+</head>
+<body>
+
+<header>
+<div class="wrap nav">
+ <a class="brand" href="#"><span class="dragon">🐉</span><span>DRAGON <span style="color:#bd8cff">SMP</span></span></a>
+ <nav>
+  <a href="#home">Home</a>
+  <a href="#store">Store</a>
+  <a href="#ranks">Ranks</a>
+  <a href="#leaderboard">Leaderboard</a>
+ </nav>
+ <div class="navright"><button class="btn" onclick="openBuy('Dragon Rank')">Visit Store</button></div>
+</div>
+</header>
+
+<main>
+<section class="hero" id="home">
+<div class="wrap">
+ <div class="eyebrow"><span class="dot"></span> Minecraft Survival • Java & Bedrock details to be confirmed</div>
+ <h1>ENTER THE<br><span class="grad">DRAGON WORLD</span></h1>
+ <p>Build your legacy, team up with friends, climb the leaderboard and make your mark on Dragon SMP.</p>
+ <div class="actions">
+  <button class="btn" onclick="copyIP()">Copy Server IP</button>
+  <a class="btn secondary" href="#store">Explore Store</a>
+ </div>
+ <div class="ipbox"><span>play.dragongg.fun</span><button class="copy" onclick="copyIP()">COPY</button></div>
+ <div class="stats">
+  <div class="stat"><strong>1.21.11</strong><span>Server version</span></div>
+  <div class="stat"><strong>Online</strong><span>Server status*</span></div>
+  <div class="stat"><strong>Survival</strong><span>Game mode*</span></div>
+ </div>
+ <p style="font-size:11px;margin-top:13px">*Demo display — connect a live status API to show real player counts and server status.</p>
+</div>
+</section>
+
+<section id="store">
+<div class="wrap">
+ <div class="sectionhead">
+  <div class="kicker">Dragon SMP Store</div>
+  <h2>Choose Your <span class="grad">Upgrade</span></h2>
+  <p>Support the server and unlock extra perks.</p>
+ </div>
+ <div class="grid">
+  <article class="card">
+   <span class="tag">STARTER</span><div class="rankicon">🌊</div>
+   <h3>Wave</h3>
+   <p class="muted">A fresh start for your Dragon SMP journey.</p>
+   <div class="price">₹49 <small>/ one-time</small></div>
+   <ul class="features"><li>Wave chat prefix</li><li>Wave rank perks</li><li>Starter rank kit</li></ul>
+   <button class="btn" style="width:100%" onclick="openBuy('Wave Rank')">Buy Wave</button>
+  </article>
+  <article class="card">
+   <span class="tag">POPULAR</span><div class="rankicon">⭐</div>
+   <h3>VIP</h3>
+   <p class="muted">Get noticed and enjoy VIP status.</p>
+   <div class="price">₹149 <small>/ one-time</small></div>
+   <ul class="features"><li>VIP chat prefix</li><li>VIP rank perks</li><li>VIP kit</li></ul>
+   <button class="btn" style="width:100%" onclick="openBuy('VIP Rank')">Buy VIP</button>
+  </article>
+  <article class="card featured">
+   <span class="tag">ELITE</span><div class="rankicon">👑</div>
+   <h3>Cardinal</h3>
+   <p class="muted">A premium rank for dedicated players.</p>
+   <div class="price">₹199 <small>/ one-time</small></div>
+   <ul class="features"><li>Cardinal chat prefix</li><li>Cardinal rank perks</li><li>Exclusive kit</li></ul>
+   <button class="btn" style="width:100%" onclick="openBuy('Cardinal Rank')">Buy Cardinal</button>
+  </article>
+  <article class="card">
+   <span class="tag">ULTIMATE</span><div class="rankicon">🐉</div>
+   <h3>Dragon</h3>
+   <p class="muted">The ultimate Dragon SMP rank.</p>
+   <div class="price">₹299 <small>/ one-time</small></div>
+   <ul class="features"><li>Dragon chat prefix</li><li>Dragon rank perks</li><li>Exclusive Dragon kit</li></ul>
+   <button class="btn" style="width:100%" onclick="openBuy('Dragon Rank')">Buy Dragon</button>
+  </article>
+ </div>
+ <p class="muted" style="text-align:center;margin-top:18px">Sample ranks and prices — edit these to match your actual server permissions and store policy.</p>
+</div>
+</section>
+
+<section id="ranks">
+<div class="wrap">
+ <div class="sectionhead">
+  <div class="kicker">Perks & privileges</div>
+  <h2>Rank <span class="grad">Benefits</span></h2>
+  <p>Compare the sample rank tiers.</p>
+ </div>
+ <div class="tablewrap">
+  <table class="leader">
+   <thead><tr><th>Rank</th><th>Price</th><th>Included</th></tr></thead>
+   <tbody>
+    <tr><td>Wave</td><td class="value">₹49</td><td>Wave prefix, rank perks, starter kit</td></tr>
+    <tr><td>VIP</td><td class="value">₹149</td><td>VIP prefix, rank perks, VIP kit</td></tr>
+    <tr><td>Cardinal</td><td class="value">₹199</td><td>Cardinal prefix, rank perks, exclusive kit</td></tr>
+    <tr><td>Dragon</td><td class="value">₹299</td><td>Dragon prefix, rank perks, Dragon kit</td></tr>
+   </tbody>
+  </table>
+ </div>
+</div>
+</section>
+
+<section id="leaderboard">
+<div class="wrap">
+ <div class="sectionhead">
+  <div class="kicker">The Hall of Fame</div>
+  <h2>Top <span class="grad">Players</span></h2>
+  <p>Sample leaderboard — connect your plugin/database for live rankings.</p>
+ </div>
+ <div class="tablewrap">
+  <table class="leader">
+   <thead><tr><th>#</th><th>Player</th><th>Balance</th><th>Kills</th></tr></thead>
+   <tbody>
+    <tr><td class="ranknum">01</td><td class="player">DragonKing</td><td class="value">$125,000</td><td>248</td></tr>
+    <tr><td class="ranknum">02</td><td class="player">ShadowX</td><td class="value">$98,500</td><td>196</td></tr>
+    <tr><td class="ranknum">03</td><td class="player">NightRider</td><td class="value">$76,200</td><td>154</td></tr>
+    <tr><td class="ranknum">04</td><td class="player">CraftMaster</td><td class="value">$61,900</td><td>121</td></tr>
+    <tr><td class="ranknum">05</td><td class="player">EnderPro</td><td class="value">$49,300</td><td>97</td></tr>
+   </tbody>
+  </table>
+ </div>
+</div>
+</section>
+
+<section>
+<div class="wrap">
+ <div class="join">
+  <h2>Ready to join the adventure?</h2>
+  <p>Jump into Dragon SMP and start building your story.</p>
+  <div class="actions" style="margin-bottom:0">
+   <button class="btn" onclick="copyIP()">Copy play.dragongg.fun</button>
+  </div>
+ </div>
+</div>
+</section>
+</main>
+
+<footer>
+<div class="wrap foot">
+ <span>© 2026 Dragon SMP. All rights reserved.</span>
+ <span>Not affiliated with Mojang or Microsoft.</span>
+</div>
+</footer>
+
+<!-- BUY RANK MODAL -->
+<div class="modal" id="buyModal">
+ <div class="modalbox">
+  <button class="close" onclick="closeBuy()" aria-label="Close">×</button>
+  <div class="kicker">UPI Checkout</div>
+  <h3 id="buyTitle">Purchase rank</h3>
+  <p class="muted">Enter your Minecraft username and check the rank amount before paying.</p>
+
+  <label>Minecraft username</label>
+  <input id="mcUser" placeholder="Your in-game name" maxlength="16" autocomplete="off">
+
+  <label>Selected rank</label>
+  <input id="itemName" readonly>
+
+  <div class="pay-price" id="rankPrice">Amount: ₹0</div>
+
+  <div style="text-align:center;background:#fff;border-radius:14px;padding:12px;margin:14px 0">
+   <img src="phonepe-qr.png" alt="Dragon SMP PhonePe UPI QR code" style="display:block;width:min(100%,260px);height:auto;margin:auto">
+   <div style="color:#222;font-weight:800;margin-top:8px">Scan & Pay using PhonePe or any UPI app</div>
+   <div style="color:#555;font-size:12px;margin-top:5px">UPI ID: 7028461320-4@ybl</div>
+  </div>
+
+  <div class="notice">
+   <b>Payment instructions</b><br>
+   Scan the QR code or press Buy Now to open your UPI app with the correct rank amount. After paying, keep your UPI transaction ID and share it with the server admin for manual verification. Rank delivery is not automatic.
+  </div>
+
+  <button class="btn" style="width:100%" onclick="upiPay()">Buy Now</button>
+
+  <p class="muted" style="font-size:11px;margin-top:12px">
+   Only pay after confirming the payee name is Ayn Murtaja Shaikh. If the UPI app does not open, scan the QR code above.
+  </p>
+ </div>
+</div>
+
+<script>
+const IP='play.dragongg.fun';
+
+const UPI_ID='7028461320-4@ybl';
+const PAYEE_NAME='Ayn Murtaja Shaikh';
+
+const prices={
+ 'Wave Rank':49,
+ 'VIP Rank':149,
+ 'Cardinal Rank':199,
+ 'Dragon Rank':299
+};
+
+function copyIP(){
+ if(navigator.clipboard&&window.isSecureContext){
+  navigator.clipboard.writeText(IP)
+   .then(()=>alert('Server IP copied: '+IP))
+   .catch(()=>prompt('Copy server IP:',IP));
+ }else{
+  prompt('Copy server IP:',IP);
+ }
+}
+
+function openBuy(item){
+ document.getElementById('buyTitle').textContent='Buy '+item;
+ document.getElementById('itemName').value=item;
+
+ const amount=prices[item];
+ document.getElementById('rankPrice').textContent='Amount: ₹'+amount;
+
+ document.getElementById('mcUser').value='';
+ document.getElementById('buyModal').classList.add('show');
+}
+
+function closeBuy(){
+ document.getElementById('buyModal').classList.remove('show');
+}
+
+function upiPay(){
+ const user=document.getElementById('mcUser').value.trim();
+
+ if(!user){
+  alert('Please enter your Minecraft username.');
+  document.getElementById('mcUser').focus();
+  return;
+ }
+
+ const item=document.getElementById('itemName').value;
+ const amount=prices[item];
+
+ if(!amount){
+  alert('Rank amount is not configured.');
+  return;
+ }
+
+ const note=encodeURIComponent('Dragon SMP '+item+' - '+user);
+
+ const url=
+  'upi://pay?pa='+encodeURIComponent(UPI_ID)+
+  '&pn='+encodeURIComponent(PAYEE_NAME)+
+  '&am='+amount+
+  '&cu=INR'+
+  '&tn='+note;
+
+ window.location.href=url;
+}
+
+document.getElementById('buyModal').addEventListener('click',e=>{
+ if(e.target.id==='buyModal')closeBuy();
+});
+</script>
+
+</body>
+</html>
