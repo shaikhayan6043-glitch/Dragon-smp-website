@@ -8,6 +8,8 @@
 <title>Dragon SMP | Minecraft Server</title>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Bungee&display=swap');
+
 *{margin:0;padding:0;box-sizing:border-box}
 body{
   font-family:Arial,sans-serif;
@@ -43,6 +45,16 @@ header{
   font-style:italic;
 }
 
+.logo{
+  display:flex;
+  align-items:center;
+  gap:0;
+  font-family:'Bungee',sans-serif;
+  font-size:25px;
+  letter-spacing:1px;
+  white-space:nowrap;
+}
+
 .logo img{
   width:40px;
   height:40px;
@@ -51,18 +63,20 @@ header{
 }
 
 .dragon-text{
-  color:#c084fc;
-  text-shadow:0 0 8px #a855f7, 0 0 18px #9333ea;
-  font-weight:900;
-  letter-spacing:1px;
+  background:linear-gradient(180deg,#f0abfc,#c026ff,#7e22ce);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  text-shadow:0 0 12px #a855f7;
 }
 
 .smp-text{
-  color:#ffffff;
   margin-left:6px;
-  font-weight:900;
-  text-shadow:0 0 8px #ffffff80;
-  letter-spacing:1px;
+  background:linear-gradient(180deg,#ffffff,#cbd5e1,#ffffff);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  text-shadow:0 0 10px #ffffff80;
 }
 nav{display:flex;gap:20px;flex-wrap:wrap}
 nav a{color:#fff;text-decoration:none;font-weight:bold}
