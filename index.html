@@ -31,37 +31,17 @@ header{
   display:flex;
   align-items:center;
   gap:0;
-  font-size:25px;
-  font-weight:bold;
-}
-
-.logo{
-  display:flex;
-  align-items:center;
-  gap:0;
-  font-size:29px;
-  font-weight:900;
-  letter-spacing:1px;
-  font-style:italic;
-}
-
-.logo{
-  display:flex;
-  align-items:center;
-  gap:0;
   font-family:'Bungee',sans-serif;
   font-size:25px;
   letter-spacing:1px;
   white-space:nowrap;
 }
-
 .logo img{
   width:48px;
   height:48px;
   object-fit:contain;
   margin-right:8px;
 }
-
 .dragon-text{
   background:linear-gradient(180deg,#f0abfc,#c026ff,#7e22ce);
   -webkit-background-clip:text;
@@ -69,7 +49,6 @@ header{
   color:transparent;
   text-shadow:0 0 12px #a855f7;
 }
-
 .smp-text{
   margin-left:6px;
   background:linear-gradient(180deg,#ffffff,#cbd5e1,#ffffff);
@@ -151,6 +130,34 @@ section{padding:45px 7%}
   font-weight:900;
 }
 .key-note{text-align:center;color:#bca9d2;margin-bottom:22px}
+
+/* RANK STUFF PHOTO SECTION */
+.rank-stuff-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:20px;
+}
+.rank-stuff-card{
+  background:#160f25;
+  border:1px solid #65418c;
+  border-radius:13px;
+  padding:12px;
+  text-align:center;
+  box-shadow:0 5px 18px #0005;
+}
+.rank-stuff-card h3{
+  color:#c084fc;
+  font-size:21px;
+  font-weight:900;
+  margin-bottom:12px;
+}
+.rank-stuff-card img{
+  display:block;
+  width:100%;
+  height:auto;
+  border-radius:9px;
+}
+
 footer{
   text-align:center;
   padding:25px;
@@ -233,6 +240,15 @@ footer{
   margin:15px 0;
 }
 .small-note{font-size:12px;color:#bca9d2;margin-top:12px}
+
+@media(max-width:600px){
+  header{justify-content:center}
+  .logo{font-size:20px}
+  .logo img{width:40px;height:40px}
+  .hero h1{font-size:32px}
+  .section-title{font-size:25px}
+  .rank-stuff-grid{grid-template-columns:1fr}
+}
 </style>
 </head>
 
@@ -240,12 +256,13 @@ footer{
 
 <header>
   <div class="logo">
-  <img src="https://i.ibb.co/0yW4Bjp7/file-00000000fac4820788bd39b1cea9064b.png" alt="Dragon SMP Logo">
-  <span class="dragon-text">DRAGON</span><span class="smp-text">SMP</span>
-</div>
+    <img src="https://i.ibb.co/0yW4Bjp7/file-00000000fac4820788bd39b1cea9064b.png" alt="Dragon SMP Logo">
+    <span class="dragon-text">DRAGON</span><span class="smp-text">SMP</span>
+  </div>
   <nav>
     <a href="#home">Home</a>
     <a href="#ranks">Rank</a>
+    <a href="#rank-stuff">Rank Stuff</a>
     <a href="#keys">Keys</a>
   </nav>
 </header>
@@ -269,7 +286,6 @@ footer{
   <h2 class="section-title">🏆 SERVER RANKS</h2>
 
   <div class="cards">
-
     <div class="card">
       <h3>WAVE RANK</h3>
       <div class="price">₹49</div>
@@ -317,7 +333,33 @@ footer{
       </ul>
       <button class="btn" onclick="openBuy('rank','Dragon',299)">BUY NOW</button>
     </div>
+  </div>
+</section>
 
+<!-- FOUR RANK STUFF PHOTOS -->
+<section id="rank-stuff">
+  <h2 class="section-title">⚔️ RANK STUFF</h2>
+
+  <div class="rank-stuff-grid">
+    <div class="rank-stuff-card">
+      <h3>WAVE RANK STUFF</h3>
+      <img src="wave-rank.png" alt="Wave Rank Stuff">
+    </div>
+
+    <div class="rank-stuff-card">
+      <h3>VIP RANK STUFF</h3>
+      <img src="vip-rank.png" alt="VIP Rank Stuff">
+    </div>
+
+    <div class="rank-stuff-card">
+      <h3>CARDINAL RANK STUFF</h3>
+      <img src="cardinal-rank.png" alt="Cardinal Rank Stuff">
+    </div>
+
+    <div class="rank-stuff-card">
+      <h3>DRAGON RANK STUFF</h3>
+      <img src="dragon-rank.png" alt="Dragon Rank Stuff">
+    </div>
   </div>
 </section>
 
@@ -327,7 +369,6 @@ footer{
   <p class="key-note">Choose your key and get it for your Minecraft account!</p>
 
   <div class="cards">
-
     <div class="card key-card">
       <h3>COMMON KEY 🔑</h3>
       <div class="price">₹5</div>
@@ -351,7 +392,6 @@ footer{
       <div class="price">₹30</div>
       <button class="btn" onclick="openBuy('key','Dragon Key',30)">BUY NOW</button>
     </div>
-
   </div>
 </section>
 
@@ -359,17 +399,11 @@ footer{
 <div class="modal" id="buyModal">
   <div class="modal-content">
     <span class="close" onclick="closeBuy()">&times;</span>
-
     <h2 id="checkoutTitle">CHECKOUT</h2>
-
     <p id="selectedItem"></p>
 
-    <input
-      type="text"
-      id="minecraftUsername"
-      placeholder="Enter Minecraft Username"
-      autocomplete="off"
-    >
+    <input type="text" id="minecraftUsername"
+      placeholder="Enter Minecraft Username" autocomplete="off">
 
     <div id="quantityArea" style="display:none">
       <p>SELECT QUANTITY</p>
@@ -381,18 +415,14 @@ footer{
     </div>
 
     <p class="total" id="totalPrice">Total: ₹0</p>
-
     <p>SCAN QR CODE TO PAY</p>
 
-    <img
-      class="qr-image"
+    <img class="qr-image"
       src="AccountQRCodeAirtel Payments Bank Limited - 1320_LIGHT_THEME.png"
-      alt="Dragon SMP Payment QR Code"
-    >
+      alt="Dragon SMP Payment QR Code">
 
     <p>UPI ID: <b>7028461320-4@ybl</b></p>
     <p>Payee: Ayn Murtaja Shaikh</p>
-
     <br>
 
     <button class="btn" style="width:100%" onclick="upiPay()">
@@ -451,7 +481,6 @@ function openBuy(type,name,price){
     type === "key" ? "block" : "none";
 
   document.getElementById("quantity").innerText = quantity;
-
   updateTotal();
 
   document.getElementById("buyModal").style.display = "block";
@@ -465,14 +494,8 @@ function closeBuy(){
 
 function changeQuantity(amount){
   quantity += amount;
-
-  if(quantity < 1){
-    quantity = 1;
-  }
-
-  if(quantity > 100){
-    quantity = 100;
-  }
+  if(quantity < 1) quantity = 1;
+  if(quantity > 100) quantity = 100;
 
   document.getElementById("quantity").innerText = quantity;
   updateTotal();
@@ -480,15 +503,11 @@ function changeQuantity(amount){
 
 function updateTotal(){
   const total = unitPrice * quantity;
-
-  document.getElementById("totalPrice").innerText =
-    "Total: ₹" + total;
+  document.getElementById("totalPrice").innerText = "Total: ₹" + total;
 }
 
 function upiPay(){
-  const username = document
-    .getElementById("minecraftUsername")
-    .value.trim();
+  const username = document.getElementById("minecraftUsername").value.trim();
 
   if(username === ""){
     alert("Please enter your Minecraft username!");
@@ -516,7 +535,6 @@ function upiPay(){
 
 window.addEventListener("click",function(event){
   const modal = document.getElementById("buyModal");
-
   if(event.target === modal){
     closeBuy();
   }
