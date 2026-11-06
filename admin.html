@@ -1,0 +1,275 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DRAGON SMP | Admin Panel</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #090612;
+  color: white;
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+.container {
+  max-width: 500px;
+  margin: 40px auto;
+  background: #171025;
+  padding: 25px;
+  border-radius: 15px;
+  border: 1px solid #8b35ff;
+}
+
+h1 {
+  text-align: center;
+  color: #bd75ff;
+  margin-bottom: 10px;
+}
+
+p {
+  text-align: center;
+  color: #aaa;
+  margin-bottom: 20px;
+}
+
+input {
+  width: 100%;
+  padding: 14px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 1px solid #6333a0;
+  background: #0d0916;
+  color: white;
+}
+
+button {
+  width: 100%;
+  padding: 13px;
+  margin-top: 12px;
+  border: none;
+  border-radius: 8px;
+  background: #902cff;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #b15aff;
+}
+
+#dashboard {
+  display: none;
+  margin-top: 25px;
+}
+
+.rank {
+  background: #251839;
+  padding: 15px;
+  margin: 12px 0;
+  border-radius: 10px;
+}
+
+#message {
+  text-align: center;
+  margin-top: 15px;
+  color: #d2a5ff;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🐉 DRAGON SMP</h1>
+<p>Secure Admin Dashboard</p>
+
+<div id="login">
+  <h3>Admin Login</h3>
+
+  <input
+    type="email"
+    id="email"
+    placeholder="Admin Email"
+  >
+
+  <input
+    type="password"
+    id="password"
+    placeholder="Password"
+  >
+
+  <button onclick="login()">LOGIN</button>
+</div>
+
+<div id="dashboard">
+  <h2>👑 Admin Dashboard</h2>
+  <p>Welcome Admin!</p>
+
+  <h3>Server Ranks</h3>
+  <div id="ranks">Loading...</div>
+
+  <button onclick="logout()">LOGOUT</button>
+</div>
+
+<div id="message"></div>
+
+</div>
+
+<script>
+
+// SUPABASE CONNECTION
+const SUPABASE_URL = "https://pkuulhvgjrwewobzgill.supabase.co";
+const SUPABASE_KEY = "sb_publishable_kU1xKacFwq5F-IWNPAWxCQ_qxVJvp00";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+// ADMIN LOGIN
+async function login() {
+
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  const { data, error } = await db.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if (error) {
+    showMessage(error.message);
+    return;
+  }
+
+  await checkAdmin();
+}
+
+// CHECK ADMIN PERMISSION
+async function checkAdmin() {
+
+  const { data: { user } } = await db.auth.getUser();
+
+  if (!user) return;
+
+  const { data, error } = await db
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .single();
+
+  if (error || data.role !== "admin") {
+    await db.auth.signOut();
+    showMessage("Access Denied!");
+    return;
+  }
+
+  document.getElementById("login").style.display = "none";
+  document.getElementById("dashboard").style.display = "block";
+
+  loadRanks();
+}
+
+// LOAD RANKS
+async function loadRanks() {
+
+  const { data, error } = await db
+    .from("rank_items")
+    .select("*")
+    .order("sort_order");
+
+  if (error) {
+    showMessage(error.message);
+    return;
+  }
+
+  const box = document.getElementById("ranks");
+  box.innerHTML = "";
+
+  data.forEach(rank => {
+
+    const item = document.createElement("div");
+    item.className = "rank";
+
+    const name = document.createElement("h3");
+    name.textContent = rank.name;
+
+    const price = document.createElement("p");
+    price.textContent = "Price: ₹" + rank.price;
+
+    const edit = document.createElement("input");
+    edit.type = "number";
+    edit.min = "0";
+    edit.value = rank.price;
+
+    const button = document.createElement("button");
+    button.textContent = "UPDATE PRICE";
+
+    button.onclick = () => updatePrice(rank.id, edit.value);
+
+    item.append(name, price, edit, button);
+    box.appendChild(item);
+
+  });
+}
+
+// UPDATE RANK PRICE
+async function updatePrice(id, value) {
+
+  const price = Number(value);
+
+  if (!Number.isSafeInteger(price) || price < 0) {
+    showMessage("Enter a valid price");
+    return;
+  }
+
+  const { error } = await db
+    .from("rank_items")
+    .update({ price })
+    .eq("id", id);
+
+  if (error) {
+    showMessage(error.message);
+    return;
+  }
+
+  showMessage("Rank price updated!");
+  loadRanks();
+}
+
+// LOGOUT
+async function logout() {
+
+  await db.auth.signOut();
+
+  document.getElementById("dashboard").style.display = "none";
+  document.getElementById("login").style.display = "block";
+
+  showMessage("Logged out successfully");
+}
+
+// MESSAGE
+function showMessage(message) {
+  document.getElementById("message").textContent = message;
+}
+
+// CHECK EXISTING SESSION
+checkAdmin();
+
+</script>
+
+</body>
+</html>
