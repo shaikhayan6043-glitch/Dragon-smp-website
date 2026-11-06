@@ -683,6 +683,177 @@ body{
   }
 }
 
+/* ===== DRAGON SMP ULTIMATE ANIMATIONS ===== */
+
+/* All text glow */
+h1,h2,h3,p,li,a,label,
+.server-ip,.price,.total,
+.logo,.no-event{
+  animation:textGlow 3.5s ease-in-out infinite alternate;
+}
+
+@keyframes textGlow{
+  from{text-shadow:0 0 2px #9333ea30}
+  to{text-shadow:0 0 10px #c084fc90,0 0 18px #7e22ce55}
+}
+
+/* Smooth entrance for every section */
+section{
+  animation:sectionEnter 1s ease both;
+}
+
+@keyframes sectionEnter{
+  from{opacity:0;transform:translateY(35px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* Navigation magic */
+nav a{
+  position:relative;
+  padding:7px 10px;
+  border-radius:7px;
+  transition:.35s;
+}
+
+nav a:hover{
+  color:#fff;
+  background:#8b2be833;
+  box-shadow:0 0 12px #a855f7,0 0 25px #7e22ce;
+  transform:translateY(-4px) scale(1.06);
+}
+
+/* Button fire shine */
+.btn{
+  background:linear-gradient(
+    110deg,#6b21a8,#c026d3,#7e22ce,#6b21a8
+  );
+  background-size:250% 100%;
+  animation:buttonFire 4s linear infinite;
+  transition:transform .3s,box-shadow .3s;
+}
+
+@keyframes buttonFire{
+  0%{background-position:0% 50%}
+  100%{background-position:250% 50%}
+}
+
+.btn:hover{
+  transform:translateY(-5px) scale(1.06);
+  box-shadow:0 0 15px #c084fc,0 0 35px #9333ea;
+}
+
+/* Card 3D effect */
+.card,.rank-stuff-card{
+  transform-style:preserve-3d;
+  transition:transform .4s ease,box-shadow .4s ease;
+}
+
+.card:hover,.rank-stuff-card:hover{
+  transform:translateY(-9px) rotateX(3deg) scale(1.025);
+  box-shadow:0 0 20px #a855f7,0 0 40px #7e22ce55;
+}
+
+/* Images floating */
+.rank-stuff-card img{
+  animation:imageFloat 4s ease-in-out infinite;
+}
+
+@keyframes imageFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-7px)}
+}
+
+/* Logo magic */
+.logo img{
+  animation:logoPower 3s ease-in-out infinite;
+}
+
+@keyframes logoPower{
+  0%,100%{filter:drop-shadow(0 0 5px #9333ea);transform:scale(1)}
+  50%{filter:drop-shadow(0 0 18px #c084fc);transform:scale(1.08)}
+}
+
+/* Server box energy */
+.server-box{
+  animation:serverPower 3s ease-in-out infinite alternate;
+}
+
+@keyframes serverPower{
+  from{box-shadow:0 0 10px #9333ea30}
+  to{box-shadow:0 0 30px #a855f7,0 0 55px #7e22ce40}
+}
+
+/* Rank prices shine */
+.price{
+  animation:pricePulse 2.5s ease-in-out infinite alternate;
+}
+
+@keyframes pricePulse{
+  from{color:#d8b4fe}
+  to{color:#fff;text-shadow:0 0 15px #c084fc}
+}
+
+/* Events box */
+.events-box{
+  animation:eventGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes eventGlow{
+  from{border-color:#65418c;box-shadow:0 0 8px #9333ea20}
+  to{border-color:#c084fc;box-shadow:0 0 25px #9333ea70}
+}
+
+/* Checkout popup */
+.modal-content{
+  animation:checkoutMagic .45s ease both;
+}
+
+@keyframes checkoutMagic{
+  from{opacity:0;transform:scale(.85) translateY(25px)}
+  to{opacity:1;transform:scale(1) translateY(0)}
+}
+
+/* Quantity buttons */
+.quantity-controls button{
+  transition:.25s;
+  box-shadow:0 0 10px #9333ea70;
+}
+
+.quantity-controls button:hover{
+  transform:scale(1.15) rotate(5deg);
+  box-shadow:0 0 20px #c084fc;
+}
+
+/* Footer glow */
+footer{
+  animation:footerGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes footerGlow{
+  from{box-shadow:0 -2px 10px #9333ea20}
+  to{box-shadow:0 -2px 25px #a855f780}
+}
+
+/* Mobile performance */
+@media(max-width:600px){
+  .card:hover,.rank-stuff-card:hover{
+    transform:translateY(-4px) scale(1.01);
+  }
+
+  nav a:hover{
+    transform:translateY(-2px);
+  }
+}
+
+/* Respect reduced motion setting */
+@media(prefers-reduced-motion:reduce){
+  h1,h2,h3,p,li,a,label,.server-ip,.price,
+  .total,.logo,.no-event,.btn,.rank-stuff-card img,
+  .logo img,.server-box,.events-box,section,footer{
+    animation:none!important;
+  }
+}
+
 </style>
 </head>
 
