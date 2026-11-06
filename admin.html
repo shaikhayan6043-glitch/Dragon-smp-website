@@ -48,6 +48,13 @@ button:hover{background:#b15aff}
 
 <div class="section">
 <h2>🏆 Server Ranks</h2>
+
+<h3>Add New Rank</h3>
+<input id="rankName" placeholder="Rank Name">
+<input id="rankPrice" type="number" min="0" placeholder="Rank Price">
+<button class="full" onclick="addRank()">ADD NEW RANK</button>
+
+<h3>Existing Ranks</h3>
 <div id="ranks">Loading...</div>
 </div>
 
@@ -165,6 +172,39 @@ async function loadRanks(){
     item.append(name,price,input,button);
     box.appendChild(item);
   });
+}
+
+async function addRank(){
+  const name=document.getElementById("rankName").value.trim();
+  const price=validPrice(document.getElementById("rankPrice").value);
+
+  if(!name||price===null){
+    showMessage("Enter rank name and valid price");
+    return;
+  }
+
+  const {data:existing,error:checkError}=await db.from("rank_items")
+    .select("id").ilike("name",name);
+
+  if(checkError){showMessage(checkError.message);return;}
+
+  if(existing.length){
+    showMessage("This rank already exists!");
+    return;
+  }
+
+  const {error}=await db.from("rank_items").insert({
+    name,
+    price,
+    sort_order:Date.now()
+  });
+
+  if(error){showMessage(error.message);return;}
+
+  document.getElementById("rankName").value="";
+  document.getElementById("rankPrice").value="";
+  showMessage("New rank added!");
+  loadRanks();
 }
 
 async function updateRank(id,value){
