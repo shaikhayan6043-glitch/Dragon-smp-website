@@ -7,108 +7,281 @@
 <meta name="theme-color" content="#090711">
 <title>Dragon SMP | Minecraft Server</title>
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Bungee&display=swap');
+<link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
 
+<style>
 *{margin:0;padding:0;box-sizing:border-box}
+
+html{scroll-behavior:smooth}
+
 body{
   font-family:Arial,sans-serif;
   background:#090711;
   color:#fff;
   line-height:1.6;
+  overflow-x:hidden;
 }
+
+/* ANIMATED BACKGROUND */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 15% 20%,#581c8740,transparent 35%),
+    radial-gradient(circle at 85% 70%,#7e22ce25,transparent 35%),
+    #090711;
+  animation:bgPulse 8s ease-in-out infinite alternate;
+}
+
+@keyframes bgPulse{
+  from{filter:brightness(.8)}
+  to{filter:brightness(1.25)}
+}
+
+/* FLOATING DRAGON */
+.dragon-fly{
+  position:fixed;
+  z-index:-1;
+  top:22%;
+  left:-100px;
+  font-size:65px;
+  opacity:.12;
+  pointer-events:none;
+  animation:dragonFly 24s linear infinite;
+  filter:drop-shadow(0 0 15px #a855f7);
+}
+
+@keyframes dragonFly{
+  0%{transform:translate(-100px,0) rotate(8deg)}
+  45%{transform:translate(50vw,-45px) rotate(-5deg)}
+  100%{transform:translate(120vw,20px) rotate(8deg)}
+}
+
+/* FLOATING EMBERS */
+.embers{
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  overflow:hidden;
+  pointer-events:none;
+}
+
+.embers span{
+  position:absolute;
+  bottom:-20px;
+  width:4px;
+  height:4px;
+  background:#c084fc;
+  border-radius:50%;
+  box-shadow:0 0 10px #a855f7;
+  animation:rise linear infinite;
+}
+
+.embers span:nth-child(1){left:10%;animation-duration:9s}
+.embers span:nth-child(2){left:25%;animation-duration:12s;animation-delay:2s}
+.embers span:nth-child(3){left:45%;animation-duration:10s;animation-delay:1s}
+.embers span:nth-child(4){left:65%;animation-duration:13s;animation-delay:3s}
+.embers span:nth-child(5){left:85%;animation-duration:11s;animation-delay:2s}
+.embers span:nth-child(6){left:95%;animation-duration:14s;animation-delay:4s}
+
+@keyframes rise{
+  0%{transform:translateY(0) scale(.5);opacity:0}
+  20%{opacity:.8}
+  100%{transform:translateY(-110vh) scale(1.5);opacity:0}
+}
+
+/* HEADER */
 header{
-  background:#100b20;
-  padding:18px 7%;
+  background:#100b20eF;
+  padding:15px 7%;
   display:flex;
   justify-content:space-between;
   align-items:center;
   flex-wrap:wrap;
   gap:12px;
-  border-bottom:1px solid #33204e;
+  border-bottom:1px solid #65418c;
+  position:sticky;
+  top:0;
+  z-index:100;
+  backdrop-filter:blur(12px);
 }
+
 .logo{
   display:flex;
   align-items:center;
-  gap:0;
   font-family:'Bungee',sans-serif;
   font-size:25px;
   letter-spacing:1px;
   white-space:nowrap;
 }
+
 .logo img{
   width:48px;
   height:48px;
   object-fit:contain;
   margin-right:8px;
 }
+
 .dragon-text{
   background:linear-gradient(180deg,#f0abfc,#c026ff,#7e22ce);
   -webkit-background-clip:text;
   background-clip:text;
   color:transparent;
-  text-shadow:0 0 12px #a855f7;
 }
+
 .smp-text{
   margin-left:6px;
-  background:linear-gradient(180deg,#ffffff,#cbd5e1,#ffffff);
+  background:linear-gradient(180deg,#fff,#cbd5e1);
   -webkit-background-clip:text;
   background-clip:text;
   color:transparent;
-  text-shadow:0 0 10px #ffffff80;
 }
-nav{display:flex;gap:20px;flex-wrap:wrap}
-nav a{color:#fff;text-decoration:none;font-weight:bold}
-nav a:hover{color:#c084fc}
+
+nav{
+  display:flex;
+  gap:18px;
+  flex-wrap:wrap;
+}
+
+nav a{
+  color:#fff;
+  text-decoration:none;
+  font-weight:bold;
+  transition:.3s;
+}
+
+nav a:hover{
+  color:#c084fc;
+  text-shadow:0 0 10px #a855f7;
+}
+
+/* HERO */
 .hero{
   text-align:center;
-  padding:75px 20px;
-  background:linear-gradient(135deg,#160b2b,#090711);
+  padding:85px 20px;
+  background:linear-gradient(135deg,#160b2bcc,#090711cc);
+  position:relative;
+  overflow:hidden;
 }
-.hero h1{font-size:42px;color:#c084fc}
-.hero p{margin:12px 0;color:#d6c8e8}
+
+.hero h1{
+  font-family:'Bungee',sans-serif;
+  font-size:clamp(30px,6vw,52px);
+  color:#c084fc;
+  text-shadow:0 0 18px #9333ea80;
+  animation:titleFloat 3s ease-in-out infinite;
+}
+
+@keyframes titleFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-7px)}
+}
+
+.hero p{
+  margin:12px 0;
+  color:#d6c8e8;
+}
+
+.hero-dragon{
+  font-size:45px;
+  display:block;
+  margin-bottom:10px;
+  animation:dragonHover 3s ease-in-out infinite;
+  filter:drop-shadow(0 0 15px #a855f7);
+}
+
+@keyframes dragonHover{
+  0%,100%{transform:translateY(0) rotate(-5deg)}
+  50%{transform:translateY(-12px) rotate(5deg)}
+}
+
+/* BUTTON */
 .btn{
   display:inline-block;
-  background:#9333ea;
+  background:linear-gradient(135deg,#9333ea,#6b21a8);
   color:white;
-  border:0;
+  border:1px solid #c084fc50;
   padding:11px 22px;
   border-radius:8px;
   font-weight:bold;
   cursor:pointer;
   text-decoration:none;
+  transition:transform .25s,box-shadow .25s,background .25s;
 }
-.btn:hover{background:#7e22ce}
-section{padding:45px 7%}
+
+.btn:hover{
+  transform:translateY(-3px);
+  box-shadow:0 6px 20px #9333ea70;
+  background:linear-gradient(135deg,#a855f7,#7e22ce);
+}
+
+/* SECTIONS */
+section{padding:50px 7%}
+
 .section-title{
   text-align:center;
   color:#c084fc;
   font-size:30px;
   margin-bottom:28px;
+  font-weight:900;
 }
+
+/* SERVER BOX */
 .server-box{
   background:#160f25;
-  border:1px solid #392653;
+  border:1px solid #65418c;
   border-radius:12px;
   padding:20px;
   max-width:500px;
   margin:25px auto 0;
   text-align:center;
+  box-shadow:0 0 25px #9333ea20;
+  animation:boxAppear 1s ease both;
 }
-.server-ip{font-size:20px;font-weight:bold;color:#d8b4fe}
+
+@keyframes boxAppear{
+  from{opacity:0;transform:translateY(25px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+.server-ip{
+  font-size:20px;
+  font-weight:bold;
+  color:#d8b4fe;
+}
+
+/* CARDS */
 .cards{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
   gap:20px;
 }
+
 .card{
-  background:#160f25;
+  background:linear-gradient(145deg,#1c1230,#100b1c);
   border:1px solid #392653;
   border-radius:13px;
   padding:22px;
   text-align:center;
   box-shadow:0 5px 18px #0005;
+  transition:transform .3s,border-color .3s,box-shadow .3s;
+  animation:cardAppear .7s ease both;
 }
+
+.card:hover{
+  transform:translateY(-7px);
+  border-color:#a855f7;
+  box-shadow:0 10px 28px #9333ea35;
+}
+
+@keyframes cardAppear{
+  from{opacity:0;transform:translateY(25px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
 .card h3{
   font-size:24px;
   font-weight:900;
@@ -116,27 +289,42 @@ section{padding:45px 7%}
   letter-spacing:1px;
   margin-bottom:8px;
 }
-.price{font-size:27px;font-weight:bold;margin:10px 0}
+
+.price{
+  font-size:27px;
+  font-weight:bold;
+  margin:10px 0;
+}
+
 .benefits{
   text-align:left;
   margin:15px 0 20px;
   padding-left:20px;
   color:#e5d9f2;
 }
+
 .benefits li{margin:7px 0}
+
 .key-card{border-color:#65418c}
+
 .key-card h3{
   color:#c084fc;
   font-weight:900;
 }
-.key-note{text-align:center;color:#bca9d2;margin-bottom:22px}
 
-/* RANK STUFF PHOTO SECTION */
+.key-note{
+  text-align:center;
+  color:#bca9d2;
+  margin-bottom:22px;
+}
+
+/* RANK STUFF */
 .rank-stuff-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
   gap:20px;
 }
+
 .rank-stuff-card{
   background:#160f25;
   border:1px solid #65418c;
@@ -144,13 +332,22 @@ section{padding:45px 7%}
   padding:12px;
   text-align:center;
   box-shadow:0 5px 18px #0005;
+  transition:.3s;
 }
+
+.rank-stuff-card:hover{
+  transform:translateY(-6px);
+  border-color:#c084fc;
+  box-shadow:0 8px 25px #9333ea40;
+}
+
 .rank-stuff-card h3{
   color:#c084fc;
   font-size:21px;
   font-weight:900;
   margin-bottom:12px;
 }
+
 .rank-stuff-card img{
   display:block;
   width:100%;
@@ -158,6 +355,47 @@ section{padding:45px 7%}
   border-radius:9px;
 }
 
+/* EVENTS */
+.events-box{
+  max-width:850px;
+  margin:auto;
+  background:linear-gradient(145deg,#1c1230,#100b1c);
+  border:1px solid #65418c;
+  border-radius:15px;
+  padding:30px 20px;
+  text-align:center;
+  box-shadow:0 0 25px #9333ea20;
+}
+
+.no-event{
+  color:#d6c8e8;
+  font-size:18px;
+  font-weight:bold;
+}
+
+.event-card{
+  display:none;
+  background:#160f25;
+  border:1px solid #9333ea;
+  border-radius:12px;
+  padding:20px;
+  text-align:left;
+}
+
+.event-card img{
+  width:100%;
+  max-height:350px;
+  object-fit:cover;
+  border-radius:10px;
+  margin:12px 0;
+}
+
+.event-card h3{
+  color:#c084fc;
+  font-size:24px;
+}
+
+/* FOOTER */
 footer{
   text-align:center;
   padding:25px;
@@ -176,6 +414,7 @@ footer{
   overflow-y:auto;
   padding:20px;
 }
+
 .modal-content{
   background:#160f25;
   border:1px solid #65418c;
@@ -187,6 +426,7 @@ footer{
   position:relative;
   text-align:center;
 }
+
 .close{
   position:absolute;
   right:15px;
@@ -195,7 +435,12 @@ footer{
   cursor:pointer;
   color:#d8b4fe;
 }
-.modal-content h2{color:#c084fc;margin-bottom:15px}
+
+.modal-content h2{
+  color:#c084fc;
+  margin-bottom:15px;
+}
+
 .modal-content input{
   width:100%;
   padding:13px;
@@ -206,7 +451,9 @@ footer{
   margin:10px 0;
   font-size:16px;
 }
+
 #quantityArea{margin:15px 0}
+
 .quantity-controls{
   display:flex;
   justify-content:center;
@@ -214,6 +461,7 @@ footer{
   gap:20px;
   margin-top:8px;
 }
+
 .quantity-controls button{
   width:40px;
   height:40px;
@@ -224,7 +472,13 @@ footer{
   color:white;
   cursor:pointer;
 }
-#quantity{font-size:22px;font-weight:bold;min-width:35px}
+
+#quantity{
+  font-size:22px;
+  font-weight:bold;
+  min-width:35px;
+}
+
 .qr-image{
   display:block;
   width:210px;
@@ -233,41 +487,69 @@ footer{
   border-radius:10px;
   background:white;
 }
+
 .total{
   font-size:23px;
   color:#d8b4fe;
   font-weight:bold;
   margin:15px 0;
 }
-.small-note{font-size:12px;color:#bca9d2;margin-top:12px}
 
+.small-note{
+  font-size:12px;
+  color:#bca9d2;
+  margin-top:12px;
+}
+
+/* MOBILE */
 @media(max-width:600px){
   header{justify-content:center}
   .logo{font-size:20px}
   .logo img{width:40px;height:40px}
-  .hero h1{font-size:32px}
+  nav{justify-content:center;gap:13px}
+  nav a{font-size:13px}
+  .hero{padding:65px 15px}
   .section-title{font-size:25px}
   .rank-stuff-grid{grid-template-columns:1fr}
+}
+
+/* REDUCED MOTION ACCESSIBILITY */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    scroll-behavior:auto!important;
+    transition-duration:.01ms!important;
+  }
 }
 </style>
 </head>
 
 <body>
 
+<div class="dragon-fly">🐉</div>
+<div class="embers">
+  <span></span><span></span><span></span>
+  <span></span><span></span><span></span>
+</div>
+
 <header>
   <div class="logo">
     <img src="https://i.ibb.co/0yW4Bjp7/file-00000000fac4820788bd39b1cea9064b.png" alt="Dragon SMP Logo">
     <span class="dragon-text">DRAGON</span><span class="smp-text">SMP</span>
   </div>
+
   <nav>
     <a href="#home">Home</a>
     <a href="#ranks">Rank</a>
     <a href="#rank-stuff">Rank Stuff</a>
+    <a href="#events">Events</a>
     <a href="#keys">Keys</a>
   </nav>
 </header>
 
 <section class="hero" id="home">
+  <span class="hero-dragon">🐉</span>
   <h1>DRAGON SMP</h1>
   <p>Welcome to Dragon SMP Minecraft Server!</p>
 
@@ -336,7 +618,7 @@ footer{
   </div>
 </section>
 
-<!-- FOUR RANK STUFF PHOTOS -->
+<!-- RANK STUFF -->
 <section id="rank-stuff">
   <h2 class="section-title">⚔️ RANK STUFF</h2>
 
@@ -363,7 +645,35 @@ footer{
   </div>
 </section>
 
-<!-- CREDIT KEYS SECTION -->
+<!-- EVENTS SECTION -->
+<section id="events">
+  <h2 class="section-title">🐉 SERVER EVENTS</h2>
+
+  <div class="events-box">
+
+    <!-- NO ACTIVE EVENT MESSAGE -->
+    <p class="no-event" id="noEvent">
+      Abhi ke liye koi active event nahi hai
+    </p>
+
+    <!--
+      EVENT START KARNE KE LIYE:
+      Neeche event-card mein display:none ko display:block karo.
+      Event ka naam, details aur image badal do.
+    -->
+
+    <div class="event-card" id="activeEvent">
+      <h3>🔥 DRAGON SMP EVENT</h3>
+      <p><b>Date:</b> Add event date here</p>
+      <p><b>Time:</b> Add event time here</p>
+      <img src="" alt="Event Image" style="display:none">
+      <p>Event details will be added here.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- CREDIT KEYS -->
 <section id="keys">
   <h2 class="section-title">🔑 CREDIT KEYS</h2>
   <p class="key-note">Choose your key and get it for your Minecraft account!</p>
