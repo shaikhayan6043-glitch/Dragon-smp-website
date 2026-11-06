@@ -169,9 +169,29 @@ async function loadRanks(){
     button.textContent="UPDATE PRICE";
     button.onclick=()=>updateRank(rank.id,input.value);
 
-    item.append(name,price,input,button);
+    const del=document.createElement("button");
+    del.className="full";
+    del.textContent="DELETE RANK";
+    del.onclick=()=>deleteRank(rank.id,rank.name);
+
+    item.append(name,price,input,button,del);
     box.appendChild(item);
   });
+}
+
+async function deleteRank(id,name){
+  if(!confirm("Are you sure you want to delete rank: "+name+"?"))return;
+
+  const {error}=await db.from("rank_items")
+    .delete().eq("id",id);
+
+  if(error){
+    showMessage(error.message);
+    return;
+  }
+
+  showMessage("Rank deleted!");
+  loadRanks();
 }
 
 
