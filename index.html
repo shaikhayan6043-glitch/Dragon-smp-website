@@ -851,6 +851,7 @@ window.addEventListener("click",function(event){
 });
 </script>
 
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const rankDB = window.supabase.createClient(
@@ -858,41 +859,112 @@ const rankDB = window.supabase.createClient(
   "sb_publishable_kU1xKacFwq5F-IWNPAWxCQ_qxVJvp00"
 );
 
+const rankBenefits = {
+  wave: [
+    "WAVE KIT CLAIM EVERY 5 DAYS ⌚",
+    "SET HOME - 8"
+  ],
+  vip: [
+    "VIP KIT CLAIM EVERY 7 DAYS ⌚",
+    "ECHEST - COMMAND",
+    "ANVIL - COMMAND",
+    "SET HOME - 12"
+  ],
+  cardinal: [
+    "CARDINAL KIT CLAIM EVERY 9 DAYS ⌚",
+    "ECHEST - COMMAND",
+    "ANVIL - COMMAND",
+    "SET HOME - 14"
+  ],
+  dragon: [
+    "DRAGON KIT CLAIM EVERY 15 DAYS ⌚",
+    "ECHEST - COMMAND",
+    "ANVIL - COMMAND",
+    "CRAFT - COMMAND",
+    "SMITHINGTABLE - COMMAND",
+    "SET HOME - 14"
+  ]
+};
+
+function normalizeRank(name) {
+  return String(name)
+    .toLowerCase()
+    .replace(/\s*rank\s*/g, "")
+    .replace(/[^a-z0-9]/g, "");
+}
+
 async function updateWebsiteRanks() {
+  const container = document.querySelector("#ranks .cards");
+
+  if (!container) return;
+
   const { data, error } = await rankDB
     .from("rank_items")
-    .select("name, price");
+    .select("name, price, sort_order")
+    .order("sort_order", { ascending: true });
 
   if (error) {
     console.error("Rank loading error:", error);
     return;
   }
 
-  const normalize = name =>
-    String(name).toLowerCase().replace(/\s*rank\s*/g, "").replace(/[^a-z0-9]/g, "");
+  if (!data || data.length === 0) {
+    container.innerHTML = "<p>No ranks available.</p>";
+    return;
+  }
 
-  document.querySelectorAll("#ranks .card").forEach(card => {
-    const heading = card.querySelector("h3");
-    const priceBox = card.querySelector(".price");
-    const button = card.querySelector("button");
+  container.innerHTML = "";
 
-    if (!heading || !priceBox || !button) return;
-
-    const rank = data.find(item =>
-      normalize(item.name) === normalize(heading.textContent)
-    );
-
-    if (!rank) return;
-
+  data.forEach(rank => {
+    const name = String(rank.name || "").trim();
     const price = Number(rank.price);
-    if (!Number.isFinite(price) || price < 0) return;
 
+    if (!name || !Number.isFinite(price) || price < 0) return;
+
+    const displayName = name.replace(/\s*rank\s*$/i, "").trim();
+    const key = normalizeRank(name);
+
+    const card = document.createElement("div");
+    card.className = "card";
+
+    const heading = document.createElement("h3");
+    heading.textContent = displayName.toUpperCase() + " RANK";
+
+    const priceBox = document.createElement("div");
+    priceBox.className = "price";
     priceBox.textContent = "₹" + price;
-    button.onclick = () => openBuy("rank", heading.textContent.replace(/\s+RANK$/i, ""), price);
+
+    const benefits = document.createElement("ul");
+    benefits.className = "benefits";
+
+    const items = rankBenefits[key] || [
+      "Special " + displayName + " Rank"
+    ];
+
+    items.forEach(item => {
+      const li = document.createElement("li");
+      li.textContent = item;
+      benefits.appendChild(li);
+    });
+
+    const button = document.createElement("button");
+    button.className = "btn";
+    button.textContent = "BUY NOW";
+    button.onclick = () => openBuy("rank", displayName, price);
+
+    card.appendChild(heading);
+    card.appendChild(priceBox);
+    card.appendChild(benefits);
+    card.appendChild(button);
+
+    container.appendChild(card);
   });
 }
 
 updateWebsiteRanks();
 </script>
+</body>
+</html>
+
 </body>
 </html>
