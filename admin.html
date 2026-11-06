@@ -174,38 +174,64 @@ async function loadRanks(){
   });
 }
 
-async function addRank(){
-  const name=document.getElementById("rankName").value.trim();
-  const price=validPrice(document.getElementById("rankPrice").value);
 
-  if(!name||price===null){
+async function addRank(){
+  const name = document.getElementById("rankName").value.trim();
+  const price = validPrice(document.getElementById("rankPrice").value);
+
+  if(!name || price === null){
     showMessage("Enter rank name and valid price");
     return;
   }
 
-  const {data:existing,error:checkError}=await db.from("rank_items")
-    .select("id").ilike("name",name);
+  const {data: existing, error: checkError} = await db
+    .from("rank_items")
+    .select("id")
+    .ilike("name", name);
 
-  if(checkError){showMessage(checkError.message);return;}
+  if(checkError){
+    showMessage(checkError.message);
+    return;
+  }
 
-  if(existing.length){
+  if(existing.length > 0){
     showMessage("This rank already exists!");
     return;
   }
 
-  const {error}=await db.from("rank_items").insert({
-    name,
-    price,
-    sort_order:Date.now()
-  });
+  const {data: latest, error: sortError} = await db
+    .from("rank_items")
+    .select("sort_order")
+    .order("sort_order", {ascending:false})
+    .limit(1);
 
-  if(error){showMessage(error.message);return;}
+  if(sortError){
+    showMessage(sortError.message);
+    return;
+  }
 
-  document.getElementById("rankName").value="";
-  document.getElementById("rankPrice").value="";
+  const nextOrder = Number(latest?.[0]?.sort_order || 0) + 1;
+
+  const {error} = await db
+    .from("rank_items")
+    .insert({
+      name: name,
+      price: price,
+      sort_order: nextOrder
+    });
+
+  if(error){
+    showMessage(error.message);
+    return;
+  }
+
+  document.getElementById("rankName").value = "";
+  document.getElementById("rankPrice").value = "";
+
   showMessage("New rank added!");
   loadRanks();
 }
+
 
 async function updateRank(id,value){
   const price=validPrice(value);
