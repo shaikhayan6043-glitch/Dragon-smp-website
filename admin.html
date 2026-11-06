@@ -1,275 +1,414 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DRAGON SMP | Admin Panel</title>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  background: #090612;
-  color: white;
-  font-family: Arial, sans-serif;
-  padding: 20px;
-}
-
-.container {
-  max-width: 500px;
-  margin: 40px auto;
-  background: #171025;
-  padding: 25px;
-  border-radius: 15px;
-  border: 1px solid #8b35ff;
-}
-
-h1 {
-  text-align: center;
-  color: #bd75ff;
-  margin-bottom: 10px;
-}
-
-p {
-  text-align: center;
-  color: #aaa;
-  margin-bottom: 20px;
-}
-
-input {
-  width: 100%;
-  padding: 14px;
-  margin: 10px 0;
-  border-radius: 8px;
-  border: 1px solid #6333a0;
-  background: #0d0916;
-  color: white;
-}
-
-button {
-  width: 100%;
-  padding: 13px;
-  margin-top: 12px;
-  border: none;
-  border-radius: 8px;
-  background: #902cff;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-button:hover {
-  background: #b15aff;
-}
-
-#dashboard {
-  display: none;
-  margin-top: 25px;
-}
-
-.rank {
-  background: #251839;
-  padding: 15px;
-  margin: 12px 0;
-  border-radius: 10px;
-}
-
-#message {
-  text-align: center;
-  margin-top: 15px;
-  color: #d2a5ff;
-}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#090612;color:white;font-family:Arial,sans-serif;padding:15px}
+.container{max-width:650px;margin:25px auto;background:#171025;padding:22px;border-radius:15px;border:1px solid #8b35ff}
+h1{text-align:center;color:#bd75ff;margin-bottom:10px}
+h2{margin:20px 0 12px;color:#d2a5ff}
+h3{margin-bottom:8px}
+p{text-align:center;color:#aaa;margin-bottom:15px}
+input,textarea{width:100%;padding:12px;margin:7px 0;border-radius:8px;border:1px solid #6333a0;background:#0d0916;color:white}
+textarea{min-height:80px;resize:vertical}
+button{padding:12px;margin:5px 0;border:0;border-radius:8px;background:#902cff;color:white;font-weight:bold;cursor:pointer}
+button:hover{background:#b15aff}
+.full{width:100%}
+.item{background:#251839;padding:15px;margin:12px 0;border-radius:10px;border:1px solid #493064}
+.item p{text-align:left;margin:8px 0}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.row button{flex:1}
+#dashboard{display:none;margin-top:20px}
+#message{text-align:center;margin-top:15px;color:#d2a5ff;overflow-wrap:anywhere}
+.section{border-top:1px solid #493064;margin-top:25px;padding-top:10px}
+.small{font-size:13px;color:#aaa}
 </style>
 </head>
 
 <body>
-
 <div class="container">
-
 <h1>🐉 DRAGON SMP</h1>
 <p>Secure Admin Dashboard</p>
 
 <div id="login">
-  <h3>Admin Login</h3>
-
-  <input
-    type="email"
-    id="email"
-    placeholder="Admin Email"
-  >
-
-  <input
-    type="password"
-    id="password"
-    placeholder="Password"
-  >
-
-  <button onclick="login()">LOGIN</button>
+<h3>Admin Login</h3>
+<input type="email" id="email" placeholder="Admin Email">
+<input type="password" id="password" placeholder="Password">
+<button class="full" onclick="login()">LOGIN</button>
 </div>
 
 <div id="dashboard">
-  <h2>👑 Admin Dashboard</h2>
-  <p>Welcome Admin!</p>
+<h2>👑 Admin Dashboard</h2>
+<p>Welcome Admin!</p>
 
-  <h3>Server Ranks</h3>
-  <div id="ranks">Loading...</div>
+<div class="section">
+<h2>🏆 Server Ranks</h2>
+<div id="ranks">Loading...</div>
+</div>
 
-  <button onclick="logout()">LOGOUT</button>
+<div class="section">
+<h2>🔑 Keys Management</h2>
+<h3>Add New Key</h3>
+<input id="keyName" placeholder="Key Name">
+<input id="keyPrice" type="number" min="0" placeholder="Key Price">
+<button class="full" onclick="addKey()">ADD KEY</button>
+<div id="keys">Loading...</div>
+</div>
+
+<div class="section">
+<h2>🎉 Events Management</h2>
+<h3>Add New Event</h3>
+<input id="eventTitle" placeholder="Event Name">
+<input id="eventDate" type="date">
+<input id="eventTime" type="time">
+<textarea id="eventDetails" placeholder="Event Details"></textarea>
+<input id="eventImage" type="url" placeholder="Image URL (optional)">
+<button class="full" onclick="addEvent()">ADD EVENT</button>
+<div id="events">Loading...</div>
+</div>
+
+<button class="full" onclick="logout()">LOGOUT</button>
 </div>
 
 <div id="message"></div>
-
 </div>
 
 <script>
-
-// SUPABASE CONNECTION
 const SUPABASE_URL = "https://pkuulhvgjrwewobzgill.supabase.co";
 const SUPABASE_KEY = "sb_publishable_kU1xKacFwq5F-IWNPAWxCQ_qxVJvp00";
 
-const db = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
-// ADMIN LOGIN
-async function login() {
+function showMessage(message){
+  document.getElementById("message").textContent=message;
+}
 
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+function validPrice(value){
+  const price=Number(value);
+  return Number.isFinite(price)&&price>=0 ? price : null;
+}
 
-  const { data, error } = await db.auth.signInWithPassword({
-    email,
-    password
-  });
+async function login(){
+  const email=document.getElementById("email").value.trim();
+  const password=document.getElementById("password").value;
 
-  if (error) {
-    showMessage(error.message);
-    return;
-  }
-
+  const {error}=await db.auth.signInWithPassword({email,password});
+  if(error){showMessage(error.message);return;}
   await checkAdmin();
 }
 
-// CHECK ADMIN PERMISSION
-async function checkAdmin() {
+async function checkAdmin(){
+  const {data:{user}}=await db.auth.getUser();
 
-  const { data: { user } } = await db.auth.getUser();
+  if(!user){
+    document.getElementById("login").style.display="block";
+    document.getElementById("dashboard").style.display="none";
+    return;
+  }
 
-  if (!user) return;
+  const {data,error}=await db.from("profiles")
+    .select("role").eq("id",user.id).single();
 
-  const { data, error } = await db
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .single();
-
-  if (error || data.role !== "admin") {
+  if(error||!data||data.role!=="admin"){
     await db.auth.signOut();
     showMessage("Access Denied!");
     return;
   }
 
-  document.getElementById("login").style.display = "none";
-  document.getElementById("dashboard").style.display = "block";
+  document.getElementById("login").style.display="none";
+  document.getElementById("dashboard").style.display="block";
 
   loadRanks();
+  loadKeys();
+  loadEvents();
 }
 
-// LOAD RANKS
-async function loadRanks() {
+/* RANKS */
+async function loadRanks(){
+  const box=document.getElementById("ranks");
+  box.textContent="Loading...";
 
-  const { data, error } = await db
-    .from("rank_items")
-    .select("*")
-    .order("sort_order");
+  const {data,error}=await db.from("rank_items")
+    .select("*").order("sort_order");
 
-  if (error) {
-    showMessage(error.message);
-    return;
-  }
+  if(error){box.textContent=error.message;return;}
+  box.innerHTML="";
 
-  const box = document.getElementById("ranks");
-  box.innerHTML = "";
+  if(!data.length){box.textContent="No ranks found.";return;}
 
-  data.forEach(rank => {
+  data.forEach(rank=>{
+    const item=document.createElement("div");
+    item.className="item";
 
-    const item = document.createElement("div");
-    item.className = "rank";
+    const name=document.createElement("h3");
+    name.textContent=rank.name;
 
-    const name = document.createElement("h3");
-    name.textContent = rank.name;
+    const price=document.createElement("p");
+    price.textContent="Current Price: ₹"+rank.price;
 
-    const price = document.createElement("p");
-    price.textContent = "Price: ₹" + rank.price;
+    const input=document.createElement("input");
+    input.type="number";
+    input.min="0";
+    input.value=rank.price;
+    input.placeholder="New Price";
 
-    const edit = document.createElement("input");
-    edit.type = "number";
-    edit.min = "0";
-    edit.value = rank.price;
+    const button=document.createElement("button");
+    button.className="full";
+    button.textContent="UPDATE PRICE";
+    button.onclick=()=>updateRank(rank.id,input.value);
 
-    const button = document.createElement("button");
-    button.textContent = "UPDATE PRICE";
-
-    button.onclick = () => updatePrice(rank.id, edit.value);
-
-    item.append(name, price, edit, button);
+    item.append(name,price,input,button);
     box.appendChild(item);
-
   });
 }
 
-// UPDATE RANK PRICE
-async function updatePrice(id, value) {
+async function updateRank(id,value){
+  const price=validPrice(value);
+  if(price===null){showMessage("Enter a valid price");return;}
 
-  const price = Number(value);
+  const {error}=await db.from("rank_items")
+    .update({price}).eq("id",id);
 
-  if (!Number.isSafeInteger(price) || price < 0) {
-    showMessage("Enter a valid price");
-    return;
-  }
-
-  const { error } = await db
-    .from("rank_items")
-    .update({ price })
-    .eq("id", id);
-
-  if (error) {
-    showMessage(error.message);
-    return;
-  }
-
+  if(error){showMessage(error.message);return;}
   showMessage("Rank price updated!");
   loadRanks();
 }
 
-// LOGOUT
-async function logout() {
+/* KEYS */
+async function loadKeys(){
+  const box=document.getElementById("keys");
+  box.textContent="Loading...";
 
+  const {data,error}=await db.from("key_items")
+    .select("*").order("sort_order");
+
+  if(error){box.textContent="Keys error: "+error.message;return;}
+  box.innerHTML="";
+
+  if(!data.length){box.textContent="No keys yet. Add your first key above.";return;}
+
+  data.forEach(key=>{
+    const item=document.createElement("div");
+    item.className="item";
+
+    const name=document.createElement("h3");
+    name.textContent=key.name;
+
+    const price=document.createElement("p");
+    price.textContent="Current Price: ₹"+key.price;
+
+    const input=document.createElement("input");
+    input.type="number";
+    input.min="0";
+    input.value=key.price;
+
+    const update=document.createElement("button");
+    update.textContent="UPDATE PRICE";
+    update.onclick=()=>updateKey(key.id,input.value);
+
+    const del=document.createElement("button");
+    del.textContent="DELETE KEY";
+    del.onclick=()=>deleteKey(key.id,key.name);
+
+    const row=document.createElement("div");
+    row.className="row";
+    row.append(update,del);
+
+    item.append(name,price,input,row);
+    box.appendChild(item);
+  });
+}
+
+async function addKey(){
+  const name=document.getElementById("keyName").value.trim();
+  const price=validPrice(document.getElementById("keyPrice").value);
+
+  if(!name||price===null){showMessage("Enter key name and valid price");return;}
+
+  const {error}=await db.from("key_items").insert({name,price});
+
+  if(error){showMessage(error.message);return;}
+
+  document.getElementById("keyName").value="";
+  document.getElementById("keyPrice").value="";
+  showMessage("Key added!");
+  loadKeys();
+}
+
+async function updateKey(id,value){
+  const price=validPrice(value);
+  if(price===null){showMessage("Enter a valid price");return;}
+
+  const {error}=await db.from("key_items").update({price}).eq("id",id);
+  if(error){showMessage(error.message);return;}
+
+  showMessage("Key price updated!");
+  loadKeys();
+}
+
+async function deleteKey(id,name){
+  if(!confirm("Delete key: "+name+"?"))return;
+
+  const {error}=await db.from("key_items").delete().eq("id",id);
+  if(error){showMessage(error.message);return;}
+
+  showMessage("Key deleted!");
+  loadKeys();
+}
+
+/* EVENTS */
+async function loadEvents(){
+  const box=document.getElementById("events");
+  box.textContent="Loading...";
+
+  const {data,error}=await db.from("events")
+    .select("*").order("sort_order");
+
+  if(error){box.textContent="Events error: "+error.message;return;}
+  box.innerHTML="";
+
+  if(!data.length){box.textContent="No events yet. Add your first event above.";return;}
+
+  data.forEach(event=>{
+    const item=document.createElement("div");
+    item.className="item";
+
+    const title=document.createElement("h3");
+    title.textContent=event.title;
+
+    const status=document.createElement("p");
+    status.textContent=event.is_active ? "Status: ACTIVE" : "Status: INACTIVE";
+
+    const date=document.createElement("p");
+    date.textContent="Date: "+(event.event_date||"Not set");
+
+    const time=document.createElement("p");
+    time.textContent="Time: "+(event.event_time||"Not set");
+
+    const details=document.createElement("p");
+    details.textContent=event.details||"No details";
+
+    const editTitle=document.createElement("input");
+    editTitle.value=event.title;
+    editTitle.placeholder="Event Name";
+
+    const editDate=document.createElement("input");
+    editDate.type="date";
+    editDate.value=event.event_date||"";
+
+    const editTime=document.createElement("input");
+    editTime.type="time";
+    editTime.value=event.event_time||"";
+
+    const editDetails=document.createElement("textarea");
+    editDetails.value=event.details||"";
+    editDetails.placeholder="Event Details";
+
+    const editImage=document.createElement("input");
+    editImage.type="url";
+    editImage.value=event.image_url||"";
+    editImage.placeholder="Image URL";
+
+    const save=document.createElement("button");
+    save.textContent="SAVE EVENT";
+    save.className="full";
+    save.onclick=()=>saveEvent(event.id,{
+      title:editTitle.value.trim(),
+      event_date:editDate.value||null,
+      event_time:editTime.value||null,
+      details:editDetails.value,
+      image_url:editImage.value.trim()||null
+    });
+
+    const toggle=document.createElement("button");
+    toggle.textContent=event.is_active?"TURN OFF":"TURN ON";
+    toggle.onclick=()=>toggleEvent(event.id,!event.is_active);
+
+    const del=document.createElement("button");
+    del.textContent="DELETE EVENT";
+    del.onclick=()=>deleteEvent(event.id,event.title);
+
+    const row=document.createElement("div");
+    row.className="row";
+    row.append(toggle,del);
+
+    item.append(title,status,date,time,details,
+      editTitle,editDate,editTime,editDetails,editImage,save,row);
+
+    box.appendChild(item);
+  });
+}
+
+async function addEvent(){
+  const title=document.getElementById("eventTitle").value.trim();
+  if(!title){showMessage("Enter event name");return;}
+
+  const event={
+    title,
+    event_date:document.getElementById("eventDate").value||null,
+    event_time:document.getElementById("eventTime").value||null,
+    details:document.getElementById("eventDetails").value,
+    image_url:document.getElementById("eventImage").value.trim()||null,
+    is_active:false
+  };
+
+  const {error}=await db.from("events").insert(event);
+  if(error){showMessage(error.message);return;}
+
+  document.getElementById("eventTitle").value="";
+  document.getElementById("eventDate").value="";
+  document.getElementById("eventTime").value="";
+  document.getElementById("eventDetails").value="";
+  document.getElementById("eventImage").value="";
+
+  showMessage("Event added! Turn it on when ready.");
+  loadEvents();
+}
+
+async function saveEvent(id,event){
+  if(!event.title){showMessage("Event name is required");return;}
+
+  const {error}=await db.from("events").update(event).eq("id",id);
+  if(error){showMessage(error.message);return;}
+
+  showMessage("Event updated!");
+  loadEvents();
+}
+
+async function toggleEvent(id,status){
+  const {error}=await db.from("events")
+    .update({is_active:status}).eq("id",id);
+
+  if(error){showMessage(error.message);return;}
+
+  showMessage(status?"Event turned ON":"Event turned OFF");
+  loadEvents();
+}
+
+async function deleteEvent(id,title){
+  if(!confirm("Delete event: "+title+"?"))return;
+
+  const {error}=await db.from("events").delete().eq("id",id);
+  if(error){showMessage(error.message);return;}
+
+  showMessage("Event deleted!");
+  loadEvents();
+}
+
+/* LOGOUT */
+async function logout(){
   await db.auth.signOut();
-
-  document.getElementById("dashboard").style.display = "none";
-  document.getElementById("login").style.display = "block";
-
+  document.getElementById("dashboard").style.display="none";
+  document.getElementById("login").style.display="block";
   showMessage("Logged out successfully");
 }
 
-// MESSAGE
-function showMessage(message) {
-  document.getElementById("message").textContent = message;
-}
-
-// CHECK EXISTING SESSION
 checkAdmin();
-
 </script>
-
 </body>
 </html>
