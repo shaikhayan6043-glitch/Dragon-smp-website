@@ -522,6 +522,167 @@ footer{
     transition-duration:.01ms!important;
   }
 }
+
+/* ===== DRAGON FANTASY UPGRADE ===== */
+
+body{
+  background:
+    radial-gradient(ellipse at 50% 15%,#40106b55,transparent 45%),
+    radial-gradient(ellipse at 50% 90%,#8b1b2530,transparent 45%),
+    #07040d;
+}
+
+/* Purple lightning atmosphere */
+.hero{
+  background:
+    radial-gradient(ellipse at 50% 0%,#8b2be866,transparent 65%),
+    linear-gradient(135deg,#170722ee,#080510ee);
+  border-bottom:1px solid #a855f755;
+  box-shadow:0 15px 50px #7e22ce25;
+}
+
+.hero::before,
+.hero::after{
+  content:"";
+  position:absolute;
+  width:220px;
+  height:220px;
+  border:2px solid #c084fc55;
+  filter:blur(2px);
+  transform:rotate(45deg);
+  animation:lightningPulse 3s ease-in-out infinite;
+  pointer-events:none;
+}
+
+.hero::before{
+  top:-140px;
+  left:-100px;
+}
+
+.hero::after{
+  bottom:-150px;
+  right:-100px;
+  animation-delay:1.5s;
+}
+
+@keyframes lightningPulse{
+  0%,100%{opacity:.15;box-shadow:0 0 10px #a855f7}
+  50%{opacity:.9;box-shadow:0 0 35px #a855f7,0 0 70px #7e22ce}
+}
+
+/* Hero dragon glow */
+.hero-dragon{
+  filter:
+    drop-shadow(0 0 12px #a855f7)
+    drop-shadow(0 0 28px #7e22ce);
+  animation:dragonHover 2.5s ease-in-out infinite,
+            dragonGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes dragonGlow{
+  from{filter:drop-shadow(0 0 8px #9333ea)}
+  to{filter:drop-shadow(0 0 28px #c084fc)}
+}
+
+/* Glowing title */
+.hero h1{
+  text-shadow:
+    0 0 10px #c084fc,
+    0 0 25px #9333ea,
+    0 0 50px #7e22ce;
+}
+
+/* Rank and key cards */
+.card,
+.rank-stuff-card,
+.events-box,
+.server-box{
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 0 18px #9333ea20;
+}
+
+.card::before,
+.rank-stuff-card::before{
+  content:"";
+  position:absolute;
+  top:-100%;
+  left:-60%;
+  width:45%;
+  height:300%;
+  background:linear-gradient(
+    90deg,transparent,#ffffff18,transparent
+  );
+  transform:rotate(25deg);
+  transition:.7s;
+  pointer-events:none;
+}
+
+.card:hover::before,
+.rank-stuff-card:hover::before{
+  left:130%;
+}
+
+.card:hover,
+.rank-stuff-card:hover{
+  border-color:#c084fc;
+  box-shadow:
+    0 0 15px #a855f7,
+    0 0 35px #7e22ce55;
+}
+
+/* Fire-purple buttons */
+.btn{
+  box-shadow:0 0 12px #9333ea55;
+  position:relative;
+  overflow:hidden;
+}
+
+.btn:hover{
+  box-shadow:
+    0 0 15px #c084fc,
+    0 0 35px #9333ea;
+}
+
+/* Animated section headings */
+.section-title{
+  text-shadow:0 0 12px #9333ea;
+  animation:headingGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes headingGlow{
+  from{text-shadow:0 0 5px #9333ea}
+  to{text-shadow:0 0 22px #c084fc,0 0 35px #7e22ce}
+}
+
+/* More glowing embers */
+.embers span{
+  background:#ff8a35;
+  box-shadow:0 0 10px #ff5e00,0 0 20px #a855f7;
+}
+
+/* Smooth modal entrance */
+.modal-content{
+  animation:modalEnter .35s ease both;
+}
+
+@keyframes modalEnter{
+  from{opacity:0;transform:translateY(25px) scale(.95)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+/* Mobile effects */
+@media(max-width:600px){
+  .hero{
+    padding:65px 15px;
+  }
+
+  .card:hover,
+  .rank-stuff-card:hover{
+    transform:translateY(-3px);
+  }
+}
+
 </style>
 </head>
 
