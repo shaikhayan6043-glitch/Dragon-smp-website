@@ -854,6 +854,145 @@ footer{
   }
 }
 
+/* ===== PREMIUM DRAGON TYPOGRAPHY ===== */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Rajdhani:wght@500;600;700;800&family=Orbitron:wght@500;600;700;800;900&display=swap');
+
+/* Main website text */
+body{
+  font-family:'Rajdhani',sans-serif;
+  letter-spacing:.35px;
+}
+
+/* Main logo */
+.logo{
+  font-family:'Cinzel',serif;
+  font-weight:900;
+  letter-spacing:2px;
+}
+
+/* Main hero title */
+.hero h1{
+  font-family:'Cinzel',serif;
+  font-weight:900;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  background:linear-gradient(
+    180deg,#fff,#e9caff,#a855f7
+  );
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  filter:drop-shadow(0 0 12px #9333ea);
+}
+
+/* All section headings */
+.section-title{
+  font-family:'Cinzel',serif;
+  font-weight:900;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+
+/* Rank and key names */
+.card h3,
+.rank-stuff-card h3,
+.event-card h3{
+  font-family:'Cinzel',serif;
+  font-weight:900;
+  letter-spacing:1.2px;
+  text-transform:uppercase;
+}
+
+/* Prices */
+.price,
+.total{
+  font-family:'Orbitron',sans-serif;
+  font-weight:800;
+  letter-spacing:1px;
+  color:#ffd978;
+  text-shadow:0 0 10px #ffb52e80;
+}
+
+/* Server IP */
+.server-ip{
+  font-family:'Orbitron',sans-serif;
+  font-weight:800;
+  letter-spacing:1px;
+  color:#e9a8ff;
+  text-shadow:0 0 12px #a855f7;
+}
+
+/* Benefits and descriptions */
+.benefits,
+.benefits li,
+.hero p,
+.key-note,
+.no-event,
+.event-card p{
+  font-family:'Rajdhani',sans-serif;
+  font-size:17px;
+  font-weight:700;
+  letter-spacing:.5px;
+}
+
+/* Navigation */
+nav a{
+  font-family:'Orbitron',sans-serif;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.5px;
+}
+
+/* All buttons */
+.btn,
+.quantity-controls button{
+  font-family:'Orbitron',sans-serif;
+  font-weight:800;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+/* Checkout popup */
+.modal-content h2{
+  font-family:'Cinzel',serif;
+  font-weight:900;
+  letter-spacing:1px;
+}
+
+.modal-content p,
+.modal-content input{
+  font-family:'Rajdhani',sans-serif;
+  font-weight:700;
+}
+
+/* Footer */
+footer{
+  font-family:'Cinzel',serif;
+  letter-spacing:1px;
+  font-size:12px;
+}
+
+/* Mobile typography */
+@media(max-width:600px){
+  .hero h1{
+    letter-spacing:1.5px;
+  }
+
+  .section-title{
+    letter-spacing:1px;
+  }
+
+  nav a{
+    font-size:10px;
+  }
+
+  .benefits,
+  .benefits li{
+    font-size:15px;
+  }
+}
+
 </style>
 </head>
 
