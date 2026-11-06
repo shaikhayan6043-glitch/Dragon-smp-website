@@ -851,5 +851,48 @@ window.addEventListener("click",function(event){
 });
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const rankDB = window.supabase.createClient(
+  "https://pkuulhvgjrwewobzgill.supabase.co",
+  "sb_publishable_kU1xKacFwq5F-IWNPAWxCQ_qxVJvp00"
+);
+
+async function updateWebsiteRanks() {
+  const { data, error } = await rankDB
+    .from("rank_items")
+    .select("name, price");
+
+  if (error) {
+    console.error("Rank loading error:", error);
+    return;
+  }
+
+  const normalize = name =>
+    String(name).toLowerCase().replace(/\s*rank\s*/g, "").replace(/[^a-z0-9]/g, "");
+
+  document.querySelectorAll("#ranks .card").forEach(card => {
+    const heading = card.querySelector("h3");
+    const priceBox = card.querySelector(".price");
+    const button = card.querySelector("button");
+
+    if (!heading || !priceBox || !button) return;
+
+    const rank = data.find(item =>
+      normalize(item.name) === normalize(heading.textContent)
+    );
+
+    if (!rank) return;
+
+    const price = Number(rank.price);
+    if (!Number.isFinite(price) || price < 0) return;
+
+    priceBox.textContent = "₹" + price;
+    button.onclick = () => openBuy("rank", heading.textContent.replace(/\s+RANK$/i, ""), price);
+  });
+}
+
+updateWebsiteRanks();
+</script>
 </body>
 </html>
